@@ -13,9 +13,9 @@ if __name__ == "__main__":
 
     file = open(f'data/{sys.argv[1]}', 'r')
 
-    cache_capacity, num_req = file.readline().split()
+    cache_capacity, num_req = map(int, file.readline().split())
 
-    reqs = file.readline().split()
+    reqs = list(map(int, file.readline().split()))
 
     # k = cache capacity, m = number of requests, reqs = list of requests
     lru_misses = lru.lru_policy(cache_capacity, num_req, reqs)
@@ -25,7 +25,7 @@ if __name__ == "__main__":
     file.close()
     output = open(f'data/{sys.argv[2]}', 'w')
     output.write(f"FIFO  : {fifo_misses}\n")
-    output.write(f"LRU   : {fifo_misses}\n")
+    output.write(f"LRU   : {lru_misses}\n")
     output.write(f"OPTFF : {optff_misses}")
     output.close()
 
