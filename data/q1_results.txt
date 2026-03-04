@@ -1,0 +1,4 @@
+Input File	k	m	FIFO	LRU	OPTFF
+file1.in	3	60	22	12	12
+file2.in	4	80	50	48	38
+file3.in	5	60	45	45	36
