@@ -82,6 +82,92 @@ Therefore, OPTFF incurs strictly fewer misses than both FIFO and LRU on this seq
 
 Let OPTFF be Belady’s Farthest-in-Future algorithm.
 
-Let ( A ) be any offline algorithm that knows the full request sequence.
+For any request sequence and any offline algorithm A,
 
-Prove that the number of misses of OPTFF is no larger than that of ( A ) on any fixed sequence.
+$$
+misses(OPTFF)≤misses(A)
+$$
+
+### Proof
+
+Among all optimal offline schedules, choose one schedule S that agrees with OPTFF for the longest prefix of requests.
+
+Let $j$ be the first step where $S$ and OPTFF differ.
+
+Since they behaved the same before step $j$, their cache contents are identical before request $r_{j}$
+
+Let $d= r_{j}$
+
+### Case 1: $d$ is already in the cache
+
+Both algorithms have a **cache hit**.
+
+No eviction occurs, so $S$ already agrees with OPTFF for step $j$.
+
+Thus the invariant holds.
+
+### Case 2: $d$ is not in the cache and both evict the same item
+
+Both algorithms have a miss and evict the same item
+
+They still behave the same, so the invariant holds
+
+### Case 3: $d$ is not in the cache and they evict different items
+
+Suppose
+
+- OPTFF evicts item $e$
+- S evicts item $f$, where $f \neq e$
+
+Since OPTFF evicts the item used **farthest in the future**,
+
+$$
+next(e) \neq next(f)
+$$
+
+Construct a new schedule $S'$
+
+- At step $j$, evict $e$ instead of $f$.
+
+Now $S'$ agrees with OPTFF through step $j$
+
+Let $j'$ be the first step after $j$ where $S'$ would behave differently from $S$.
+
+Let $g$ be the request at step $j'$
+
+### Case 3a: $g = e$
+
+This cannot happen
+
+Since OPTFF chose $e$ as the item requested farthest in the future, there must be a request for $f$  before $e$.
+
+### Case 3b: $g = f$
+
+Schedule $S$ must miss on $f$
+
+Modify $S'$ so it evicts the same item that $S$ evicts
+
+After this step the caches become identical again
+
+### Case 3c: $q \neq e, f$
+
+If $S$ evicts $e$, then make $S'$ evict $f$
+
+After that the cache states again become identical
+
+---
+
+Thus we can construct a schedule $S'$ that
+
+- is still optimal
+- agrees with OPTFF for one more step
+
+This contradicts the assumption that $S$ agreed with OPTFF for the longest prefix
+
+Therefore OPTFF must be optimal, and
+
+$$
+misses(OPTFF)≤misses(A)
+$$
+
+for any offline algorithm A.
